@@ -1,9 +1,5 @@
 // Config
-export type {
-  SvgrAppConfig,
-  FirebaseConfig,
-  RevenueCatConfig,
-} from './config';
+export type { SvgrAppConfig, FirebaseConfig, RevenueCatConfig } from './config';
 export {
   APP_NAME,
   APP_DOMAIN,
@@ -33,8 +29,5 @@ export type { SvgDimensions } from './utils';
 export { getSvgDimensions, getSvgFileSize, getSvgFileSizeKB } from './utils';
 
 // Hooks
-export type {
-  ImageConverterState,
-  UseImageConverterReturn,
-} from './hooks';
+export type { ImageConverterState, UseImageConverterReturn } from './hooks';
 export { useImageConverter } from './hooks';

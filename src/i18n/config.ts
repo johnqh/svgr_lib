@@ -83,8 +83,7 @@ export const SUPPORTED_LANGUAGES: LanguageInfo[] = [
   {
     code: 'uk',
     name: 'Ukrainian',
-    nativeName:
-      '\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430',
+    nativeName: '\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430',
     hreflang: 'uk',
   },
   {
@@ -102,5 +101,6 @@ export const DEFAULT_LANGUAGE = 'en';
 export const I18N_NAMESPACES = ['svgr', 'auth'] as const;
 export const DEFAULT_NAMESPACE = 'svgr';
 
-export const LANGUAGE_HREFLANG_MAP: Record<string, string> =
-  Object.fromEntries(SUPPORTED_LANGUAGES.map(l => [l.code, l.hreflang]));
+export const LANGUAGE_HREFLANG_MAP: Record<string, string> = Object.fromEntries(
+  SUPPORTED_LANGUAGES.map(l => [l.code, l.hreflang])
+);

@@ -18,9 +18,7 @@ export interface UseImageConverterReturn extends ImageConverterState {
   reset: () => void;
 }
 
-export function useImageConverter(
-  client: SvgrClient
-): UseImageConverterReturn {
+export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
   const convertMutation = useConvert(client);
 
   const [quality, setQuality] = useState(QUALITY_DEFAULT);
@@ -39,15 +37,12 @@ export function useImageConverter(
               setSvgResult(response.data.svg);
             } else {
               setError(
-                (response as { error?: string }).error ||
-                  'Conversion failed'
+                (response as { error?: string }).error || 'Conversion failed'
               );
             }
           },
           onError: err => {
-            setError(
-              err instanceof Error ? err.message : 'Conversion failed'
-            );
+            setError(err instanceof Error ? err.message : 'Conversion failed');
           },
         }
       );

@@ -19,9 +19,7 @@ export function getSvgDimensions(svgString: string): SvgDimensions {
   }
 
   // Fall back to viewBox
-  const viewBoxMatch = svgString.match(
-    /<svg[^>]*\bviewBox=["']([^"']+)["']/
-  );
+  const viewBoxMatch = svgString.match(/<svg[^>]*\bviewBox=["']([^"']+)["']/);
   if (viewBoxMatch) {
     const parts = viewBoxMatch[1].split(/[\s,]+/).map(Number);
     if (parts.length === 4 && parts[2] > 0 && parts[3] > 0) {

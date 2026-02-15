@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/svgr_lib",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shared business logic library for SVGR web and React Native apps",
   "type": "module",
   "main": "dist/index.js",
