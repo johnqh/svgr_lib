@@ -10,3 +10,10 @@ export {
   SUPPORTED_IMAGE_TYPES,
 } from './constants';
 export type { SupportedImageType } from './constants';
+export type { ConversionPreset } from './presets';
+export {
+  CONVERSION_PRESETS,
+  DEFAULT_PRESET_ID,
+  getPresetById,
+  getDefaultPreset,
+} from './presets';

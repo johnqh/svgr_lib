@@ -1,10 +1,21 @@
+/**
+ * Describes a supported language in the SVGR application.
+ *
+ * Contains both the internal language code used for routing and translation
+ * lookups, and the standard hreflang value used for SEO purposes.
+ */
 export interface LanguageInfo {
+  /** Internal language code used for translations and routing (e.g., `'en'`, `'zh-hant'`). */
   code: string;
+  /** English name of the language (e.g., `'Japanese'`). */
   name: string;
+  /** Native name of the language (e.g., `'日本語'`). */
   nativeName: string;
+  /** Standard hreflang attribute value for SEO (e.g., `'zh-Hant'`). May differ from `code`. */
   hreflang: string;
 }
 
+/** All 16 languages supported by the SVGR application. */
 export const SUPPORTED_LANGUAGES: LanguageInfo[] = [
   { code: 'en', name: 'English', nativeName: 'English', hreflang: 'en' },
   {
@@ -94,13 +105,24 @@ export const SUPPORTED_LANGUAGES: LanguageInfo[] = [
   },
 ];
 
+/** Array of all supported language codes, derived from {@link SUPPORTED_LANGUAGES}. */
 export const SUPPORTED_LANGUAGE_CODES = SUPPORTED_LANGUAGES.map(l => l.code);
 
+/** The default/fallback language code used when no language preference is set. */
 export const DEFAULT_LANGUAGE = 'en';
 
+/** The translation namespaces used by the i18n system. */
 export const I18N_NAMESPACES = ['svgr', 'auth'] as const;
+
+/** The default translation namespace. */
 export const DEFAULT_NAMESPACE = 'svgr';
 
+/**
+ * Maps internal language codes to their corresponding hreflang attribute values.
+ *
+ * This mapping is critical for SEO in the web app. Internal codes (e.g., `'zh-hant'`)
+ * may differ from the standard hreflang values (e.g., `'zh-Hant'`).
+ */
 export const LANGUAGE_HREFLANG_MAP: Record<string, string> = Object.fromEntries(
   SUPPORTED_LANGUAGES.map(l => [l.code, l.hreflang])
 );

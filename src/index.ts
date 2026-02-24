@@ -11,6 +11,13 @@ export {
   SUPPORTED_IMAGE_TYPES,
 } from './config';
 export type { SupportedImageType } from './config';
+export type { ConversionPreset } from './config';
+export {
+  CONVERSION_PRESETS,
+  DEFAULT_PRESET_ID,
+  getPresetById,
+  getDefaultPreset,
+} from './config';
 
 // i18n
 export type { LanguageInfo } from './i18n';
@@ -24,7 +31,17 @@ export {
 } from './i18n';
 
 // Utils
-export { isValidImageType, getBaseName } from './utils';
+export type { ValidationResult } from './utils';
+export {
+  isValidImageType,
+  getBaseName,
+  getImageTypeDisplayName,
+  getSupportedFormatsDisplay,
+  validateImageFile,
+  getAcceptedFileExtensions,
+  MAX_FILE_SIZE_BYTES,
+  MAX_FILE_SIZE_MB,
+} from './utils';
 export type { SvgDimensions } from './utils';
 export { getSvgDimensions, getSvgFileSize, getSvgFileSizeKB } from './utils';
 
