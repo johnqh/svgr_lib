@@ -5,7 +5,7 @@
       "name": "@sudobility/svgr_lib",
       "devDependencies": {
         "@eslint/js": "^9.39.2",
-        "@sudobility/svgr_client": "^1.0.13",
+        "@sudobility/svgr_client": "^1.0.14",
         "@sudobility/svgr_types": "^1.0.7",
         "@sudobility/types": "^1.9.54",
         "@tanstack/react-query": "^5.90.5",
@@ -23,7 +23,7 @@
         "vitest": "^4.0.4",
       },
       "peerDependencies": {
-        "@sudobility/svgr_client": "^1.0.13",
+        "@sudobility/svgr_client": "^1.0.14",
         "@sudobility/svgr_types": "^1.0.7",
         "@sudobility/types": "^1.9.54",
         "@tanstack/react-query": ">=5.0.0",
@@ -206,7 +206,7 @@
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
-    "@sudobility/svgr_client": ["@sudobility/svgr_client@1.0.13", "", { "dependencies": { "@sudobility/svgr_types": "^1.0.7" }, "peerDependencies": { "@sudobility/types": "^1.9.54", "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-50niw64eEN81DNIVBhXro8hKkQiNr51a5mWOzzreqQ/O32j3kk1kQcYbWLiDzkqDJSA0Ke1Mt4UPGSOsEJupjQ=="],
+    "@sudobility/svgr_client": ["@sudobility/svgr_client@1.0.14", "", { "dependencies": { "@sudobility/svgr_types": "^1.0.7" }, "peerDependencies": { "@sudobility/types": "^1.9.54", "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-geOcpZjkvOxsEZCKTeOy/7A8031QJ5dXqjzQZ2KmbHWk1XzERcF/8TqBEtQQkIN1pMpb6IVE707qJs3ao08dvg=="],
 
     "@sudobility/svgr_types": ["@sudobility/svgr_types@1.0.7", "", { "peerDependencies": { "@sudobility/types": "^1.9.54" } }, "sha512-Nd4wIEBoWm33lzrNDsWH8ApZKkpkBiUrVWeibAa+rlB1mA9zlbnCXEUq6wHIIfRE9ysCI+fm7ljJWKPb5qL9xw=="],
 
