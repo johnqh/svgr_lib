@@ -120,9 +120,8 @@ svgr_types + svgr_client
 - **Shared between web and React Native** -- do not import browser-specific or Node-specific APIs. Keep all code platform-agnostic.
 - Peer dependencies include `@sudobility/svgr_client`, `@sudobility/svgr_types`, `@sudobility/types`, `@tanstack/react-query`, and `react` -- consumers must provide all of these.
 
-## Testing
+## Testing Notes
 
-- **Command**: `bun test` (runs Vitest)
 - Tests are in `src/config/constants.test.ts`, `src/i18n/config.test.ts`, `src/utils/validation.test.ts`, and `src/utils/svg.test.ts`
 - Test constants for correct values (quality range, supported types, app name)
 - Test validation functions with valid and invalid file types
