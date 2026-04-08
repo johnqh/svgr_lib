@@ -15,6 +15,8 @@ export interface ImageConverterState {
   quality: number;
   /** Whether the SVG output should have a transparent background. */
   transparentBg: boolean;
+  /** Whether to run OCR text recognition on the image. */
+  ocr: boolean;
   /** The resulting SVG string after a successful conversion, or null if no conversion has completed. */
   svgResult: string | null;
   /** An error message if the last conversion failed, or null if no error occurred. */
@@ -34,6 +36,8 @@ export interface UseImageConverterReturn extends ImageConverterState {
   setQuality: (q: number) => void;
   /** Sets whether the SVG output should have a transparent background. */
   setTransparentBg: (v: boolean) => void;
+  /** Sets whether to run OCR text recognition. */
+  setOcr: (v: boolean) => void;
   /**
    * Triggers a conversion of the given base64-encoded image.
    * @param base64 - The base64-encoded image data to convert.
@@ -85,6 +89,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
 
   const [quality, setQuality] = useState(QUALITY_DEFAULT);
   const [transparentBg, setTransparentBg] = useState(false);
+  const [ocr, setOcr] = useState(true);
   const [svgResult, setSvgResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -92,7 +97,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
     (base64: string, filename: string) => {
       setError(null);
       convertMutation.mutate(
-        { original: base64, filename, quality, transparentBg },
+        { original: base64, filename, quality, transparentBg, ocr },
         {
           onSuccess: response => {
             if (response.success && response.data) {
@@ -109,7 +114,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
         }
       );
     },
-    [convertMutation, quality, transparentBg]
+    [convertMutation, quality, transparentBg, ocr]
   );
 
   const reset = useCallback(() => {
@@ -120,11 +125,13 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
   return {
     quality,
     transparentBg,
+    ocr,
     svgResult,
     error,
     isConverting: convertMutation.isPending,
     setQuality,
     setTransparentBg,
+    setOcr,
     convert,
     reset,
   };
