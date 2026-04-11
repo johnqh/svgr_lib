@@ -94,7 +94,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
   const [quality, setQuality] = useState(QUALITY_DEFAULT);
   const [transparentBg, setTransparentBg] = useState(false);
   const [ocr, setOcr] = useState(true);
-  const [mergePaths, setMergePaths] = useState(true);
+  const [mergePaths, setMergePaths] = useState(false);
   const [svgResult, setSvgResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
