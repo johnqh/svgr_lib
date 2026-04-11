@@ -97,29 +97,39 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
   const [mergePaths, setMergePaths] = useState(false);
   const [svgResult, setSvgResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isFetchingSvg, setIsFetchingSvg] = useState(false);
 
   const convert = useCallback(
-    (base64: string, filename: string) => {
+    async (base64: string, filename: string) => {
       setError(null);
-      convertMutation.mutate(
-        { original: base64, filename, quality, transparentBg, ocr, mergePaths },
-        {
-          onSuccess: response => {
-            if (response.success && response.data) {
-              setSvgResult(response.data.svg);
-            } else {
-              setError(
-                (response as { error?: string }).error || 'Conversion failed'
-              );
-            }
-          },
-          onError: err => {
-            setError(err instanceof Error ? err.message : 'Conversion failed');
-          },
+      try {
+        const response = await convertMutation.mutateAsync({
+          original: base64,
+          filename,
+          quality,
+          transparentBg,
+          ocr,
+          mergePaths,
+        });
+        if (response.success && response.data) {
+          setIsFetchingSvg(true);
+          try {
+            const svg = await client.fetchSvg(response.data.cacheId);
+            setSvgResult(svg);
+          } finally {
+            setIsFetchingSvg(false);
+          }
+        } else {
+          setError(
+            (response as { error?: string }).error || 'Conversion failed'
+          );
         }
-      );
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Conversion failed');
+        setIsFetchingSvg(false);
+      }
     },
-    [convertMutation, quality, transparentBg, ocr, mergePaths]
+    [convertMutation, client, quality, transparentBg, ocr, mergePaths]
   );
 
   const reset = useCallback(() => {
@@ -134,7 +144,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
     mergePaths,
     svgResult,
     error,
-    isConverting: convertMutation.isPending,
+    isConverting: convertMutation.isPending || isFetchingSvg,
     setQuality,
     setTransparentBg,
     setOcr,
