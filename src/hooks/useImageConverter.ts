@@ -17,6 +17,8 @@ export interface ImageConverterState {
   transparentBg: boolean;
   /** Whether to run OCR text recognition on the image. */
   ocr: boolean;
+  /** Whether to aggressively merge small/thin vector paths into neighbors. */
+  mergePaths: boolean;
   /** The resulting SVG string after a successful conversion, or null if no conversion has completed. */
   svgResult: string | null;
   /** An error message if the last conversion failed, or null if no error occurred. */
@@ -38,6 +40,8 @@ export interface UseImageConverterReturn extends ImageConverterState {
   setTransparentBg: (v: boolean) => void;
   /** Sets whether to run OCR text recognition. */
   setOcr: (v: boolean) => void;
+  /** Sets whether to aggressively merge small/thin vector paths. */
+  setMergePaths: (v: boolean) => void;
   /**
    * Triggers a conversion of the given base64-encoded image.
    * @param base64 - The base64-encoded image data to convert.
@@ -90,6 +94,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
   const [quality, setQuality] = useState(QUALITY_DEFAULT);
   const [transparentBg, setTransparentBg] = useState(false);
   const [ocr, setOcr] = useState(true);
+  const [mergePaths, setMergePaths] = useState(true);
   const [svgResult, setSvgResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -97,7 +102,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
     (base64: string, filename: string) => {
       setError(null);
       convertMutation.mutate(
-        { original: base64, filename, quality, transparentBg, ocr },
+        { original: base64, filename, quality, transparentBg, ocr, mergePaths },
         {
           onSuccess: response => {
             if (response.success && response.data) {
@@ -114,7 +119,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
         }
       );
     },
-    [convertMutation, quality, transparentBg, ocr]
+    [convertMutation, quality, transparentBg, ocr, mergePaths]
   );
 
   const reset = useCallback(() => {
@@ -126,12 +131,14 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
     quality,
     transparentBg,
     ocr,
+    mergePaths,
     svgResult,
     error,
     isConverting: convertMutation.isPending,
     setQuality,
     setTransparentBg,
     setOcr,
+    setMergePaths,
     convert,
     reset,
   };
