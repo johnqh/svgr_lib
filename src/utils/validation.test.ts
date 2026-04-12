@@ -36,9 +36,7 @@ describe('getBaseName', () => {
   it('strips file extension', () => {
     expect(getBaseName('photo.png')).toBe('photo');
     expect(getBaseName('my-image.jpeg')).toBe('my-image');
-    expect(getBaseName('file.name.with.dots.svg')).toBe(
-      'file.name.with.dots'
-    );
+    expect(getBaseName('file.name.with.dots.svg')).toBe('file.name.with.dots');
   });
 
   it('returns "converted" for undefined/empty', () => {

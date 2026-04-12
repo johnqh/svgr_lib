@@ -3,12 +3,14 @@ import { getSvgDimensions, getSvgFileSizeKB } from './svg';
 
 describe('getSvgDimensions', () => {
   it('extracts width/height from attributes', () => {
-    const svg = '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"></svg>';
+    const svg =
+      '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"></svg>';
     expect(getSvgDimensions(svg)).toEqual({ width: 400, height: 300 });
   });
 
   it('extracts dimensions from viewBox when no width/height', () => {
-    const svg = '<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg"></svg>';
+    const svg =
+      '<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg"></svg>';
     expect(getSvgDimensions(svg)).toEqual({ width: 800, height: 600 });
   });
 
@@ -19,7 +21,8 @@ describe('getSvgDimensions', () => {
   });
 
   it('handles viewBox with commas', () => {
-    const svg = '<svg viewBox="0,0,200,150" xmlns="http://www.w3.org/2000/svg"></svg>';
+    const svg =
+      '<svg viewBox="0,0,200,150" xmlns="http://www.w3.org/2000/svg"></svg>';
     expect(getSvgDimensions(svg)).toEqual({ width: 200, height: 150 });
   });
 
@@ -29,7 +32,8 @@ describe('getSvgDimensions', () => {
   });
 
   it('returns default for invalid width/height', () => {
-    const svg = '<svg width="0" height="0" xmlns="http://www.w3.org/2000/svg"></svg>';
+    const svg =
+      '<svg width="0" height="0" xmlns="http://www.w3.org/2000/svg"></svg>';
     expect(getSvgDimensions(svg)).toEqual({ width: 800, height: 600 });
   });
 });
