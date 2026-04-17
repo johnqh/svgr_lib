@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useConvert } from '@sudobility/svgr_client';
-import type { SvgrClient } from '@sudobility/svgr_client';
+import type { SvgrClient, ImageType } from '@sudobility/svgr_client';
 import { QUALITY_DEFAULT } from '../config/constants';
 
 /**
@@ -19,6 +19,8 @@ export interface ImageConverterState {
   ocr: boolean;
   /** Whether to aggressively merge small/thin vector paths into neighbors. */
   mergePaths: boolean;
+  /** Image type for preprocessing: 'auto', 'photo', or 'design'. */
+  imageType: ImageType;
   /** The resulting SVG string after a successful conversion, or null if no conversion has completed. */
   svgResult: string | null;
   /** An error message if the last conversion failed, or null if no error occurred. */
@@ -42,6 +44,8 @@ export interface UseImageConverterReturn extends ImageConverterState {
   setOcr: (v: boolean) => void;
   /** Sets whether to aggressively merge small/thin vector paths. */
   setMergePaths: (v: boolean) => void;
+  /** Sets the image type for preprocessing. */
+  setImageType: (v: ImageType) => void;
   /**
    * Triggers a conversion of the given base64-encoded image.
    * @param base64 - The base64-encoded image data to convert.
@@ -95,6 +99,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
   const [transparentBg, setTransparentBg] = useState(false);
   const [ocr, setOcr] = useState(true);
   const [mergePaths, setMergePaths] = useState(false);
+  const [imageType, setImageType] = useState<ImageType>('auto');
   const [svgResult, setSvgResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isFetchingSvg, setIsFetchingSvg] = useState(false);
@@ -110,6 +115,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
           transparentBg,
           ocr,
           mergePaths,
+          imageType,
         });
         if (response.success && response.data) {
           setIsFetchingSvg(true);
@@ -129,7 +135,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
         setIsFetchingSvg(false);
       }
     },
-    [convertMutation, client, quality, transparentBg, ocr, mergePaths]
+    [convertMutation, client, quality, transparentBg, ocr, mergePaths, imageType]
   );
 
   const reset = useCallback(() => {
@@ -142,6 +148,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
     transparentBg,
     ocr,
     mergePaths,
+    imageType,
     svgResult,
     error,
     isConverting: convertMutation.isPending || isFetchingSvg,
@@ -149,6 +156,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
     setTransparentBg,
     setOcr,
     setMergePaths,
+    setImageType,
     convert,
     reset,
   };

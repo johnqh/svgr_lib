@@ -48,3 +48,7 @@ export { getSvgDimensions, getSvgFileSize, getSvgFileSizeKB } from './utils';
 // Hooks
 export type { ImageConverterState, UseImageConverterReturn } from './hooks';
 export { useImageConverter } from './hooks';
+
+// Re-export image type from svgr_types for convenience
+export type { ImageType } from '@sudobility/svgr_types';
+export { IMAGE_TYPES } from '@sudobility/svgr_types';
