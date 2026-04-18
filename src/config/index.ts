@@ -8,6 +8,7 @@ export {
   QUALITY_MAX,
   QUALITY_DEFAULT,
   SUPPORTED_IMAGE_TYPES,
+  MAX_IMAGE_DIMENSION,
 } from './constants';
 export type { SupportedImageType } from './constants';
 export type { ConversionPreset } from './presets';

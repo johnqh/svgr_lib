@@ -11,3 +11,4 @@ export {
 } from './validation';
 export type { SvgDimensions } from './svg';
 export { getSvgDimensions, getSvgFileSize, getSvgFileSizeKB } from './svg';
+export { scaleImageWeb } from './scale-image';

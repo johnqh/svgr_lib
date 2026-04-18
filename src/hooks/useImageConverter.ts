@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useConvert } from '@sudobility/svgr_client';
 import type { ImageType, SvgrClient } from '@sudobility/svgr_client';
-import { QUALITY_DEFAULT } from '../config/constants';
+import { MAX_IMAGE_DIMENSION, QUALITY_DEFAULT } from '../config/constants';
 
 /**
  * Represents the current state of the image converter.
@@ -92,7 +92,19 @@ export interface UseImageConverterReturn extends ImageConverterState {
  * converter.reset();
  * ```
  */
-export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
+/**
+ * Optional function to scale a base64 image down to a max dimension.
+ * Returns the scaled base64 string (without data URL prefix).
+ */
+export type ScaleImageFn = (
+  base64: string,
+  maxDimension: number
+) => Promise<string>;
+
+export function useImageConverter(
+  client: SvgrClient,
+  scaleImage?: ScaleImageFn
+): UseImageConverterReturn {
   const convertMutation = useConvert(client);
 
   const [quality, setQuality] = useState(QUALITY_DEFAULT);
@@ -108,8 +120,11 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
     async (base64: string, filename: string) => {
       setError(null);
       try {
+        const scaled = scaleImage
+          ? await scaleImage(base64, MAX_IMAGE_DIMENSION)
+          : base64;
         const response = await convertMutation.mutateAsync({
-          original: base64,
+          original: scaled,
           filename,
           quality,
           transparentBg,
@@ -138,6 +153,7 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
     [
       convertMutation,
       client,
+      scaleImage,
       quality,
       transparentBg,
       ocr,

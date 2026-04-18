@@ -9,6 +9,7 @@ export {
   QUALITY_MAX,
   QUALITY_DEFAULT,
   SUPPORTED_IMAGE_TYPES,
+  MAX_IMAGE_DIMENSION,
 } from './config';
 export type { SupportedImageType } from './config';
 export type { ConversionPreset } from './config';
@@ -44,9 +45,14 @@ export {
 } from './utils';
 export type { SvgDimensions } from './utils';
 export { getSvgDimensions, getSvgFileSize, getSvgFileSizeKB } from './utils';
+export { scaleImageWeb } from './utils';
 
 // Hooks
-export type { ImageConverterState, UseImageConverterReturn } from './hooks';
+export type {
+  ImageConverterState,
+  UseImageConverterReturn,
+  ScaleImageFn,
+} from './hooks';
 export { useImageConverter } from './hooks';
 
 // Re-export image type from svgr_types for convenience
