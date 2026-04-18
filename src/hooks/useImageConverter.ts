@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useConvert } from '@sudobility/svgr_client';
-import type { SvgrClient, ImageType } from '@sudobility/svgr_client';
+import type { ImageType, SvgrClient } from '@sudobility/svgr_client';
 import { QUALITY_DEFAULT } from '../config/constants';
 
 /**
@@ -135,7 +135,15 @@ export function useImageConverter(client: SvgrClient): UseImageConverterReturn {
         setIsFetchingSvg(false);
       }
     },
-    [convertMutation, client, quality, transparentBg, ocr, mergePaths, imageType]
+    [
+      convertMutation,
+      client,
+      quality,
+      transparentBg,
+      ocr,
+      mergePaths,
+      imageType,
+    ]
   );
 
   const reset = useCallback(() => {
