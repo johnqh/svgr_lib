@@ -38,6 +38,8 @@ export default [
         clearInterval: 'readonly',
         NodeJS: 'readonly',
         fetch: 'readonly',
+        Image: 'readonly',
+        HTMLCanvasElement: 'readonly',
       },
     },
     plugins: {
