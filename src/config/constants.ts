@@ -7,9 +7,6 @@ export const APP_DOMAIN = 'svgr.app';
 /** The name of the company that publishes SVGR. */
 export const COMPANY_NAME = 'Sudobility Inc.';
 
-/** The default base URL for the SVGR API. */
-export const DEFAULT_API_URL = 'https://api.svgr.app';
-
 /** Minimum allowed quality value for image conversion (1 = lowest quality). */
 export const QUALITY_MIN = 1;
 
