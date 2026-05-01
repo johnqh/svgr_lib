@@ -120,9 +120,10 @@ export function useImageConverter(
     async (base64: string, filename: string) => {
       setError(null);
       try {
-        const scaled = scaleImage
-          ? await scaleImage(base64, MAX_IMAGE_DIMENSION)
-          : base64;
+        const scaled =
+          scaleImage && imageType !== 'design'
+            ? await scaleImage(base64, MAX_IMAGE_DIMENSION)
+            : base64;
         const response = await convertMutation.mutateAsync({
           original: scaled,
           filename,
