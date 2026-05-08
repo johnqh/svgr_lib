@@ -31,7 +31,7 @@ export const SUPPORTED_IMAGE_TYPES = [
 ] as const;
 
 /** Maximum dimension (width or height) for images sent to the server. */
-export const MAX_IMAGE_DIMENSION = 1024;
+export const MAX_IMAGE_DIMENSION = 1500;
 
 /** A union type of all supported image MIME types. */
 export type SupportedImageType = (typeof SUPPORTED_IMAGE_TYPES)[number];
