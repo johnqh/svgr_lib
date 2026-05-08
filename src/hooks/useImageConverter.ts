@@ -19,7 +19,7 @@ export interface ImageConverterState {
   ocr: boolean;
   /** Whether to aggressively merge small/thin vector paths into neighbors. */
   mergePaths: boolean;
-  /** Image type for preprocessing: 'auto', 'photo', or 'design'. */
+  /** Image type for preprocessing. */
   imageType: ImageType;
   /** The resulting SVG string after a successful conversion, or null if no conversion has completed. */
   svgResult: string | null;
@@ -78,7 +78,7 @@ export interface UseImageConverterReturn extends ImageConverterState {
  * converter.setTransparentBg(true);
  *
  * // Convert an image
- * converter.convert(base64Data, 'photo.png');
+ * converter.convert(base64Data, 'image.png');
  *
  * // Check results
  * if (converter.svgResult) {
@@ -101,6 +101,10 @@ export type ScaleImageFn = (
   maxDimension: number
 ) => Promise<string>;
 
+function supportsInputProcessingOptions(imageType: ImageType): boolean {
+  return imageType === 'auto' || imageType === 'design';
+}
+
 export function useImageConverter(
   client: SvgrClient,
   scaleImage?: ScaleImageFn
@@ -108,13 +112,37 @@ export function useImageConverter(
   const convertMutation = useConvert(client);
 
   const [quality, setQuality] = useState(QUALITY_DEFAULT);
-  const [transparentBg, setTransparentBg] = useState(false);
-  const [ocr, setOcr] = useState(true);
+  const [transparentBg, setTransparentBgState] = useState(false);
+  const [ocr, setOcrState] = useState(true);
   const [mergePaths, setMergePaths] = useState(false);
-  const [imageType, setImageType] = useState<ImageType>('auto');
+  const [imageType, setImageTypeState] = useState<ImageType>('auto');
   const [svgResult, setSvgResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isFetchingSvg, setIsFetchingSvg] = useState(false);
+
+  const setTransparentBg = useCallback(
+    (v: boolean) => {
+      setTransparentBgState(
+        supportsInputProcessingOptions(imageType) ? v : false
+      );
+    },
+    [imageType]
+  );
+
+  const setOcr = useCallback(
+    (v: boolean) => {
+      setOcrState(supportsInputProcessingOptions(imageType) ? v : false);
+    },
+    [imageType]
+  );
+
+  const setImageType = useCallback((nextImageType: ImageType) => {
+    setImageTypeState(nextImageType);
+    if (!supportsInputProcessingOptions(nextImageType)) {
+      setTransparentBgState(false);
+      setOcrState(false);
+    }
+  }, []);
 
   const convert = useCallback(
     async (base64: string, filename: string) => {
