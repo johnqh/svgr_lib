@@ -10,6 +10,48 @@ import { MAX_IMAGE_DIMENSION, QUALITY_DEFAULT } from '../config/constants';
  * the resulting SVG output, any error that occurred, and whether
  * a conversion is currently in progress.
  */
+export const OCR_SUPPORTED_IMAGE_TYPES: ReadonlySet<ImageType> = new Set([
+  'auto',
+  'design',
+  'line_art',
+  'logo',
+  'manga',
+  'poster',
+  'screenshot_ui',
+  'diagram',
+  'blueprint_cad',
+  'map',
+  'chart_graph',
+  'comic_western',
+  'flat_infographic',
+  'packaging_label',
+  'document_scan',
+  'icon_sheet',
+  'sticker_sheet',
+]);
+
+export const TRANSPARENT_BG_SUPPORTED_IMAGE_TYPES: ReadonlySet<ImageType> =
+  new Set([
+    'auto',
+    'design',
+    'line_art',
+    'logo',
+    'illustration',
+    'manga',
+    'comic_western',
+    'pixel_art',
+    'engraving',
+    'diagram',
+    'blueprint_cad',
+    'chart_graph',
+    'flat_infographic',
+    'icon_sheet',
+    'sticker_sheet',
+    'tattoo_flash',
+    'silhouette_cutout',
+    'emoji_moji',
+  ]);
+
 export interface ImageConverterState {
   /** Conversion quality level (1-10, where 1 is lowest and 10 is highest). */
   quality: number;
@@ -27,6 +69,10 @@ export interface ImageConverterState {
   error: string | null;
   /** Whether a conversion is currently in progress. */
   isConverting: boolean;
+  /** Whether OCR is configurable for the current image type. */
+  supportsOcr: boolean;
+  /** Whether transparent background is configurable for the current image type. */
+  supportsTransparentBg: boolean;
 }
 
 /**
@@ -101,8 +147,12 @@ export type ScaleImageFn = (
   maxDimension: number
 ) => Promise<string>;
 
-function supportsInputProcessingOptions(imageType: ImageType): boolean {
-  return imageType === 'auto' || imageType === 'design';
+export function supportsOcrOption(imageType: ImageType): boolean {
+  return OCR_SUPPORTED_IMAGE_TYPES.has(imageType);
+}
+
+export function supportsTransparentBgOption(imageType: ImageType): boolean {
+  return TRANSPARENT_BG_SUPPORTED_IMAGE_TYPES.has(imageType);
 }
 
 export function useImageConverter(
@@ -122,24 +172,24 @@ export function useImageConverter(
 
   const setTransparentBg = useCallback(
     (v: boolean) => {
-      setTransparentBgState(
-        supportsInputProcessingOptions(imageType) ? v : false
-      );
+      setTransparentBgState(supportsTransparentBgOption(imageType) ? v : false);
     },
     [imageType]
   );
 
   const setOcr = useCallback(
     (v: boolean) => {
-      setOcrState(supportsInputProcessingOptions(imageType) ? v : false);
+      setOcrState(supportsOcrOption(imageType) ? v : false);
     },
     [imageType]
   );
 
   const setImageType = useCallback((nextImageType: ImageType) => {
     setImageTypeState(nextImageType);
-    if (!supportsInputProcessingOptions(nextImageType)) {
+    if (!supportsTransparentBgOption(nextImageType)) {
       setTransparentBgState(false);
+    }
+    if (!supportsOcrOption(nextImageType)) {
       setOcrState(false);
     }
   }, []);
@@ -205,6 +255,8 @@ export function useImageConverter(
     svgResult,
     error,
     isConverting: convertMutation.isPending || isFetchingSvg,
+    supportsOcr: supportsOcrOption(imageType),
+    supportsTransparentBg: supportsTransparentBgOption(imageType),
     setQuality,
     setTransparentBg,
     setOcr,

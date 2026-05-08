@@ -52,7 +52,13 @@ export type {
   UseImageConverterReturn,
   ScaleImageFn,
 } from './hooks';
-export { useImageConverter } from './hooks';
+export {
+  useImageConverter,
+  OCR_SUPPORTED_IMAGE_TYPES,
+  TRANSPARENT_BG_SUPPORTED_IMAGE_TYPES,
+  supportsOcrOption,
+  supportsTransparentBgOption,
+} from './hooks';
 
 // Re-export image type from svgr_types for convenience
 export type { ImageType } from '@sudobility/svgr_types';
