@@ -127,9 +127,9 @@ describe('validateImageFile', () => {
   });
 
   it('includes actual file size in error for oversized files', () => {
-    const result = validateImageFile('image/png', 15 * 1024 * 1024);
+    const result = validateImageFile('image/png', 20 * 1024 * 1024);
     expect(result.valid).toBe(false);
-    expect(result.error).toContain('15.0 MB');
+    expect(result.error).toContain('20.0 MB');
   });
 
   it('checks MIME type before file size', () => {
@@ -156,8 +156,8 @@ describe('validateImageFile', () => {
 });
 
 describe('MAX_FILE_SIZE constants', () => {
-  it('MAX_FILE_SIZE_BYTES is 10 MB', () => {
-    expect(MAX_FILE_SIZE_BYTES).toBe(10 * 1024 * 1024);
+  it('MAX_FILE_SIZE_BYTES is 15 MB', () => {
+    expect(MAX_FILE_SIZE_BYTES).toBe(15 * 1024 * 1024);
   });
 
   it('MAX_FILE_SIZE_MB matches MAX_FILE_SIZE_BYTES', () => {

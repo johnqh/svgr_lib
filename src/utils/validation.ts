@@ -3,11 +3,11 @@ import {
   type SupportedImageType,
 } from '../config/constants';
 
-/** Maximum file size allowed for image uploads, in bytes (10 MB). */
-export const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
+/** Maximum file size allowed for image uploads, in bytes (15 MB). */
+export const MAX_FILE_SIZE_BYTES = 15 * 1024 * 1024;
 
 /** Maximum file size allowed for image uploads, in megabytes. */
-export const MAX_FILE_SIZE_MB = 10;
+export const MAX_FILE_SIZE_MB = 15;
 
 /**
  * Validation result returned by {@link validateImageFile}.
