@@ -30,8 +30,8 @@ export const SUPPORTED_IMAGE_TYPES = [
   'image/gif',
 ] as const;
 
-/** Maximum dimension (width or height) for images sent to the server. */
-export const MAX_IMAGE_DIMENSION = 2048;
+/** Maximum total pixels (width × height) for images sent to the server. */
+export const MAX_PIXELS = 1_000_000;
 
 /** A union type of all supported image MIME types. */
 export type SupportedImageType = (typeof SUPPORTED_IMAGE_TYPES)[number];

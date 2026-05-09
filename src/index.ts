@@ -8,7 +8,7 @@ export {
   QUALITY_MAX,
   QUALITY_DEFAULT,
   SUPPORTED_IMAGE_TYPES,
-  MAX_IMAGE_DIMENSION,
+  MAX_PIXELS,
 } from './config';
 export type { SupportedImageType } from './config';
 export type { ConversionPreset } from './config';

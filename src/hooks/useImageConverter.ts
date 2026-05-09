@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useConvert } from '@sudobility/svgr_client';
 import type { ImageType, SvgrClient } from '@sudobility/svgr_client';
-import { MAX_IMAGE_DIMENSION, QUALITY_DEFAULT } from '../config/constants';
+import { MAX_PIXELS, QUALITY_DEFAULT } from '../config/constants';
 
 /**
  * Represents the current state of the image converter.
@@ -139,12 +139,12 @@ export interface UseImageConverterReturn extends ImageConverterState {
  * ```
  */
 /**
- * Optional function to scale a base64 image down to a max dimension.
+ * Optional function to scale a base64 image down to a max pixel count.
  * Returns the scaled base64 string (without data URL prefix).
  */
 export type ScaleImageFn = (
   base64: string,
-  maxDimension: number
+  maxPixels: number
 ) => Promise<string>;
 
 export function supportsOcrOption(imageType: ImageType): boolean {
@@ -200,7 +200,7 @@ export function useImageConverter(
       try {
         const scaled =
           scaleImage && imageType !== 'design'
-            ? await scaleImage(base64, MAX_IMAGE_DIMENSION)
+            ? await scaleImage(base64, MAX_PIXELS)
             : base64;
         const response = await convertMutation.mutateAsync({
           original: scaled,
