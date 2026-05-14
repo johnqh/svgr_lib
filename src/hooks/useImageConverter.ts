@@ -1,15 +1,15 @@
-import { useCallback, useState } from 'react';
-import { useConvert } from '@sudobility/svgr_client';
-import type { ImageType, SvgrClient } from '@sudobility/svgr_client';
-import { MAX_PIXELS, QUALITY_DEFAULT } from '../config/constants';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  useUploadImage,
+  useCreateJob,
+  useJobStatus,
+  useImageJobs,
+  svgrKeys,
+} from '@sudobility/svgr_client';
+import type { ImageType, JobResult, SvgrClient } from '@sudobility/svgr_client';
+import { useQueryClient } from '@tanstack/react-query';
+import { QUALITY_DEFAULT } from '../config/constants';
 
-/**
- * Represents the current state of the image converter.
- *
- * Tracks quality settings, background transparency preference,
- * the resulting SVG output, any error that occurred, and whether
- * a conversion is currently in progress.
- */
 export const OCR_SUPPORTED_IMAGE_TYPES: ReadonlySet<ImageType> = new Set([
   'auto',
   'design',
@@ -53,91 +53,56 @@ export const TRANSPARENT_BG_SUPPORTED_IMAGE_TYPES: ReadonlySet<ImageType> =
   ]);
 
 export interface ImageConverterState {
-  /** Conversion quality level (1-10, where 1 is lowest and 10 is highest). */
   quality: number;
-  /** Whether the SVG output should have a transparent background. */
   transparentBg: boolean;
-  /** Whether to run OCR text recognition on the image. */
   ocr: boolean;
-  /** Whether to aggressively merge small/thin vector paths into neighbors. */
   mergePaths: boolean;
-  /** Image type for preprocessing. */
   imageType: ImageType;
-  /** The resulting SVG string after a successful conversion, or null if no conversion has completed. */
-  svgResult: string | null;
-  /** An error message if the last conversion failed, or null if no error occurred. */
-  error: string | null;
-  /** Whether a conversion is currently in progress. */
-  isConverting: boolean;
-  /** Whether OCR is configurable for the current image type. */
   supportsOcr: boolean;
-  /** Whether transparent background is configurable for the current image type. */
   supportsTransparentBg: boolean;
+
+  /** Server-assigned image ID after upload. */
+  imageId: string | null;
+  /** Whether an upload is in progress. */
+  isUploading: boolean;
+
+  /** ID of the job currently being tracked. */
+  currentJobId: string | null;
+  /** Latest polled data for the current job. */
+  currentJob: JobResult | null;
+  /** Whether a conversion is in progress (pending or processing). */
+  isConverting: boolean;
+
+  /** JPEG preview object URL (set when job completes). */
+  previewUrl: string | null;
+  /** SVG filename for download (not loaded into memory). */
+  svgFilename: string | null;
+
+  /** All jobs for the current image. */
+  jobs: JobResult[];
+
+  error: string | null;
 }
 
-/**
- * The return value of the {@link useImageConverter} hook.
- *
- * Extends {@link ImageConverterState} with actions to modify settings,
- * trigger conversions, and reset the converter state.
- */
 export interface UseImageConverterReturn extends ImageConverterState {
-  /** Sets the conversion quality level. Must be between QUALITY_MIN (1) and QUALITY_MAX (10). */
   setQuality: (q: number) => void;
-  /** Sets whether the SVG output should have a transparent background. */
   setTransparentBg: (v: boolean) => void;
-  /** Sets whether to run OCR text recognition. */
   setOcr: (v: boolean) => void;
-  /** Sets whether to aggressively merge small/thin vector paths. */
   setMergePaths: (v: boolean) => void;
-  /** Sets the image type for preprocessing. */
   setImageType: (v: ImageType) => void;
-  /**
-   * Triggers a conversion of the given base64-encoded image.
-   * @param base64 - The base64-encoded image data to convert.
-   * @param filename - The original filename of the image being converted.
-   */
-  convert: (base64: string, filename: string) => void;
-  /** Resets the converter state, clearing the SVG result and any error. */
+
+  /** Upload an image file to the server. */
+  upload: (file: File) => Promise<void>;
+  /** Create a conversion job with current settings. Image must be uploaded first. */
+  convert: () => void;
+  /** Reset all state. */
   reset: () => void;
+  /** Switch preview to a different job's results. */
+  selectJob: (jobId: string) => void;
+  /** Fetch the SVG file from the server. */
+  fetchSvg: () => Promise<Blob | null>;
 }
 
-/**
- * React hook that manages the image-to-SVG conversion workflow.
- *
- * This is the central abstraction for the SVGR conversion process, used by
- * both the web app (`svgr_app`) and the React Native app (`svgr_app_rn`).
- *
- * Manages local state for quality, transparent background preference,
- * the resulting SVG, and any errors. Delegates the actual API call
- * to `@sudobility/svgr_client`'s `useConvert` mutation hook.
- *
- * @param client - An initialized {@link SvgrClient} instance used to make API calls.
- * @returns An object containing the current converter state and actions to control it.
- *
- * @example
- * ```tsx
- * const converter = useImageConverter(client);
- *
- * // Adjust settings
- * converter.setQuality(8);
- * converter.setTransparentBg(true);
- *
- * // Convert an image
- * converter.convert(base64Data, 'image.png');
- *
- * // Check results
- * if (converter.svgResult) {
- *   // Use the SVG output
- * }
- * if (converter.error) {
- *   // Handle the error
- * }
- *
- * // Reset for a new conversion
- * converter.reset();
- * ```
- */
 /**
  * Optional function to scale a base64 image down to a max pixel count.
  * Returns the scaled base64 string (without data URL prefix).
@@ -157,18 +122,57 @@ export function supportsTransparentBgOption(imageType: ImageType): boolean {
 
 export function useImageConverter(
   client: SvgrClient,
-  scaleImage?: ScaleImageFn
+  _scaleImage?: ScaleImageFn
 ): UseImageConverterReturn {
-  const convertMutation = useConvert(client);
+  const queryClient = useQueryClient();
+  const uploadMutation = useUploadImage(client);
+  const createJobMutation = useCreateJob(client);
 
   const [quality, setQuality] = useState(QUALITY_DEFAULT);
   const [transparentBg, setTransparentBgState] = useState(false);
   const [ocr, setOcrState] = useState(true);
   const [mergePaths, setMergePaths] = useState(false);
   const [imageType, setImageTypeState] = useState<ImageType>('auto');
-  const [svgResult, setSvgResult] = useState<string | null>(null);
+  const [imageId, setImageId] = useState<string | null>(null);
+  const [currentJobId, setCurrentJobId] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [svgFilename, setSvgFilename] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isFetchingSvg, setIsFetchingSvg] = useState(false);
+
+  // Poll job status
+  const jobStatusQuery = useJobStatus(client, currentJobId);
+  const currentJob = jobStatusQuery.data?.data ?? null;
+
+  // List all jobs for current image
+  const imageJobsQuery = useImageJobs(client, imageId);
+  const jobs = imageJobsQuery.data?.data ?? [];
+
+  // When job completes, fetch the JPEG preview
+  useEffect(() => {
+    if (!currentJob) return;
+    if (currentJob.status === 'done' && currentJob.previewFilename) {
+      setSvgFilename(currentJob.svgFilename ?? null);
+      // Fetch preview JPEG
+      client
+        .fetchFile(currentJob.previewFilename)
+        .then(blob => {
+          const url = URL.createObjectURL(blob);
+          setPreviewUrl(prev => {
+            if (prev) URL.revokeObjectURL(prev);
+            return url;
+          });
+        })
+        .catch(err => {
+          console.error('Failed to fetch preview:', err);
+        });
+      // Refresh job list
+      queryClient.invalidateQueries({
+        queryKey: svgrKeys.imageJobs(currentJob.imageId),
+      });
+    } else if (currentJob.status === 'error') {
+      setError(currentJob.errorMessage ?? 'Conversion failed');
+    }
+  }, [currentJob?.status, currentJob?.previewFilename]);
 
   const setTransparentBg = useCallback(
     (v: boolean) => {
@@ -194,57 +198,113 @@ export function useImageConverter(
     }
   }, []);
 
-  const convert = useCallback(
-    async (base64: string, filename: string) => {
+  const upload = useCallback(
+    async (file: File) => {
       setError(null);
       try {
-        const scaled =
-          scaleImage && imageType !== 'design'
-            ? await scaleImage(base64, MAX_PIXELS)
-            : base64;
-        const response = await convertMutation.mutateAsync({
-          original: scaled,
-          filename,
-          quality,
-          transparentBg,
-          ocr,
-          mergePaths,
-          imageType,
-        });
+        const response = await uploadMutation.mutateAsync(file);
         if (response.success && response.data) {
-          setIsFetchingSvg(true);
-          try {
-            const svg = await client.fetchSvg(response.data.cacheId);
-            setSvgResult(svg);
-          } finally {
-            setIsFetchingSvg(false);
-          }
+          setImageId(response.data.imageId);
         } else {
           setError(
-            (response as { error?: string }).error || 'Conversion failed'
+            (response as { error?: string }).error ?? 'Upload failed'
           );
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Conversion failed');
-        setIsFetchingSvg(false);
+        setError(err instanceof Error ? err.message : 'Upload failed');
       }
     },
-    [
-      convertMutation,
-      client,
-      scaleImage,
-      quality,
-      transparentBg,
-      ocr,
-      mergePaths,
-      imageType,
-    ]
+    [uploadMutation]
   );
 
+  const convert = useCallback(() => {
+    if (!imageId) return;
+    setError(null);
+    setPreviewUrl(prev => {
+      if (prev) URL.revokeObjectURL(prev);
+      return null;
+    });
+    setSvgFilename(null);
+
+    createJobMutation
+      .mutateAsync({
+        imageId,
+        quality,
+        transparentBg,
+        ocr,
+        mergePaths,
+        imageType,
+      })
+      .then(response => {
+        if (response.success && response.data) {
+          setCurrentJobId(response.data.jobId);
+        } else {
+          setError(
+            (response as { error?: string }).error ?? 'Failed to create job'
+          );
+        }
+      })
+      .catch(err => {
+        setError(err instanceof Error ? err.message : 'Failed to create job');
+      });
+  }, [
+    imageId,
+    quality,
+    transparentBg,
+    ocr,
+    mergePaths,
+    imageType,
+    createJobMutation,
+  ]);
+
   const reset = useCallback(() => {
-    setSvgResult(null);
+    setImageId(null);
+    setCurrentJobId(null);
+    setPreviewUrl(prev => {
+      if (prev) URL.revokeObjectURL(prev);
+      return null;
+    });
+    setSvgFilename(null);
     setError(null);
   }, []);
+
+  const selectJob = useCallback(
+    (jobId: string) => {
+      const job = jobs.find(j => j.jobId === jobId);
+      if (!job || job.status !== 'done') return;
+      setCurrentJobId(jobId);
+      setSvgFilename(job.svgFilename ?? null);
+      if (job.previewFilename) {
+        client
+          .fetchFile(job.previewFilename)
+          .then(blob => {
+            const url = URL.createObjectURL(blob);
+            setPreviewUrl(prev => {
+              if (prev) URL.revokeObjectURL(prev);
+              return url;
+            });
+          })
+          .catch(err => console.error('Failed to fetch preview:', err));
+      }
+    },
+    [jobs, client]
+  );
+
+  const fetchSvg = useCallback(async (): Promise<Blob | null> => {
+    if (!svgFilename) return null;
+    try {
+      return await client.fetchFile(svgFilename);
+    } catch (err) {
+      console.error('Failed to fetch SVG:', err);
+      return null;
+    }
+  }, [svgFilename, client]);
+
+  const isConverting =
+    createJobMutation.isPending ||
+    (currentJob !== null &&
+      currentJob.status !== 'done' &&
+      currentJob.status !== 'error');
 
   return {
     quality,
@@ -252,17 +312,26 @@ export function useImageConverter(
     ocr,
     mergePaths,
     imageType,
-    svgResult,
-    error,
-    isConverting: convertMutation.isPending || isFetchingSvg,
     supportsOcr: supportsOcrOption(imageType),
     supportsTransparentBg: supportsTransparentBgOption(imageType),
+    imageId,
+    isUploading: uploadMutation.isPending,
+    currentJobId,
+    currentJob,
+    isConverting,
+    previewUrl,
+    svgFilename,
+    jobs,
+    error,
     setQuality,
     setTransparentBg,
     setOcr,
     setMergePaths,
     setImageType,
+    upload,
     convert,
     reset,
+    selectJob,
+    fetchSvg,
   };
 }
