@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
-  useUploadImage,
-  useCreateJob,
-  useJobStatus,
-  useImageJobs,
   svgrKeys,
+  useCreateJob,
+  useImageJobs,
+  useJobStatus,
+  useUploadImage,
 } from '@sudobility/svgr_client';
 import type { ImageType, JobResult, SvgrClient } from '@sudobility/svgr_client';
 import { useQueryClient } from '@tanstack/react-query';
@@ -206,9 +206,7 @@ export function useImageConverter(
         if (response.success && response.data) {
           setImageId(response.data.imageId);
         } else {
-          setError(
-            (response as { error?: string }).error ?? 'Upload failed'
-          );
+          setError((response as { error?: string }).error ?? 'Upload failed');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Upload failed');
