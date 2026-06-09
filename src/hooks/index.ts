@@ -10,3 +10,6 @@ export {
   supportsOcrOption,
   supportsTransparentBgOption,
 } from './useImageConverter';
+
+export type { UseCommunitiesReturn } from './useCommunities';
+export { useCommunities } from './useCommunities';

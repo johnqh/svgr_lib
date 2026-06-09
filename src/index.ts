@@ -51,15 +51,21 @@ export type {
   ImageConverterState,
   UseImageConverterReturn,
   ScaleImageFn,
+  UseCommunitiesReturn,
 } from './hooks';
 export {
   useImageConverter,
+  useCommunities,
   OCR_SUPPORTED_IMAGE_TYPES,
   TRANSPARENT_BG_SUPPORTED_IMAGE_TYPES,
   supportsOcrOption,
   supportsTransparentBgOption,
 } from './hooks';
 
-// Re-export image type from svgr_types for convenience
-export type { ImageType } from '@sudobility/svgr_types';
-export { IMAGE_TYPES } from '@sudobility/svgr_types';
+// Re-export types from svgr_types/svgr_client for convenience
+export type {
+  ImageType,
+  Community,
+  CommunityPlatform,
+} from '@sudobility/svgr_types';
+export { IMAGE_TYPES, COMMUNITY_PLATFORMS } from '@sudobility/svgr_types';
