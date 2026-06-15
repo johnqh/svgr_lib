@@ -27,7 +27,7 @@ src/
 │   └── useImageConverter.ts    # Main converter hook
 ├── i18n/
 │   ├── index.ts                # i18n exports
-│   ├── config.ts               # i18n configuration (16 languages, namespaces)
+│   ├── config.ts               # i18n configuration (15 languages, namespaces)
 │   └── config.test.ts          # i18n config tests
 └── utils/
     ├── index.ts                # Util exports
@@ -66,7 +66,7 @@ Main React hook managing the conversion workflow:
 
 ### i18n
 
-- 16 supported languages: en, zh, zh-hant, ja, ko, es, fr, de, it, pt, ru, ar, sv, th, uk, vi
+- 15 supported languages: en, zh, zh-hant, ja, ko, es, fr, de, it, pt, ru, sv, th, uk, vi
 - Namespace-based translation structure
 - Configuration shared between web and RN apps
 
@@ -108,7 +108,7 @@ svgr_types + svgr_client
 - **`useImageConverter` hook** is the central abstraction -- manages `quality`, `transparentBg`, `svgResult`, and `error` state. Delegates API calls to svgr_client's `useConvert` hook.
 - **Validation utils** (`isValidImageType`) check file types against the `SUPPORTED_IMAGE_TYPES` constant
 - **SVG utils** (`getSvgDimensions`, `getSvgFileSize`) parse SVG strings to extract metadata
-- **i18n config** defines 16 supported languages with namespace-based translation structure. `LANGUAGE_HREFLANG_MAP` maps internal language codes to hreflang attribute values.
+- **i18n config** defines 15 supported languages with namespace-based translation structure. `LANGUAGE_HREFLANG_MAP` maps internal language codes to hreflang attribute values.
 - **`SUPPORTED_IMAGE_TYPES`** constant defines the 5 accepted image formats
 - ESM-only build output using `tsconfig.build.json`
 

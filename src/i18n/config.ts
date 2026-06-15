@@ -15,7 +15,7 @@ export interface LanguageInfo {
   hreflang: string;
 }
 
-/** All 16 languages supported by the SVGR application. */
+/** All 15 languages supported by the SVGR application. */
 export const SUPPORTED_LANGUAGES: LanguageInfo[] = [
   { code: 'en', name: 'English', nativeName: 'English', hreflang: 'en' },
   {
@@ -72,12 +72,6 @@ export const SUPPORTED_LANGUAGES: LanguageInfo[] = [
     name: 'Russian',
     nativeName: '\u0420\u0443\u0441\u0441\u043a\u0438\u0439',
     hreflang: 'ru',
-  },
-  {
-    code: 'ar',
-    name: 'Arabic',
-    nativeName: '\u0627\u0644\u0639\u0631\u0628\u064a\u0629',
-    hreflang: 'ar',
   },
   {
     code: 'sv',

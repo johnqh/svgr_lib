@@ -22,8 +22,8 @@ describe('i18n config', () => {
     expect(I18N_NAMESPACES).toContain('auth');
   });
 
-  it('has 16 supported languages', () => {
-    expect(SUPPORTED_LANGUAGES).toHaveLength(16);
+  it('has 15 supported languages', () => {
+    expect(SUPPORTED_LANGUAGES).toHaveLength(15);
   });
 
   it('language codes match SUPPORTED_LANGUAGES', () => {
@@ -65,14 +65,13 @@ describe('i18n language completeness', () => {
     'it',
     'pt',
     'ru',
-    'ar',
     'sv',
     'th',
     'uk',
     'vi',
   ];
 
-  it('includes all 16 expected languages', () => {
+  it('includes all 15 expected languages', () => {
     for (const code of expectedLanguageCodes) {
       expect(SUPPORTED_LANGUAGE_CODES).toContain(code);
     }
@@ -116,7 +115,6 @@ describe('i18n hreflang mapping', () => {
       'it',
       'pt',
       'ru',
-      'ar',
       'sv',
       'th',
       'uk',
