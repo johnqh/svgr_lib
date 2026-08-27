@@ -1,5 +1,10 @@
 # SVGR Lib
 
+> **Git policy — never auto-commit or auto-push.** Leave your work in the working tree.
+> Run `git commit`, `git push`, `gh pr create`, or `scripts/push_all.sh` **only when the user
+> explicitly asks in that turn**. Approval for an earlier change does not carry forward, and
+> finishing a task is not permission to commit it.
+
 Shared business logic for SVGR web and React Native apps.
 
 **npm**: `@sudobility/svgr_lib` (restricted, BUSL-1.1)
@@ -127,3 +132,7 @@ svgr_types + svgr_client
 - Test validation functions with valid and invalid file types
 - Test SVG parsing utilities with various SVG string formats
 - Test i18n configuration for correct language codes and namespace setup
+
+## Git Workflow
+
+- Do not use feature branches for code changes. Always stay on the current branch.
