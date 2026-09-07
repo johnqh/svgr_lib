@@ -4,8 +4,8 @@ import {
   DEFAULT_PRESET_ID,
   getDefaultPreset,
   getPresetById,
-} from './presets';
-import { QUALITY_DEFAULT, QUALITY_MAX, QUALITY_MIN } from './constants';
+} from './presets.js';
+import { QUALITY_DEFAULT, QUALITY_MAX, QUALITY_MIN } from './constants.js';
 
 describe('CONVERSION_PRESETS', () => {
   it('has at least one preset', () => {

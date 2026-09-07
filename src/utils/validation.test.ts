@@ -8,7 +8,7 @@ import {
   MAX_FILE_SIZE_BYTES,
   MAX_FILE_SIZE_MB,
   validateImageFile,
-} from './validation';
+} from './validation.js';
 
 describe('isValidImageType', () => {
   it('accepts supported image types', () => {

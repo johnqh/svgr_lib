@@ -6,7 +6,7 @@ import {
   LANGUAGE_HREFLANG_MAP,
   SUPPORTED_LANGUAGE_CODES,
   SUPPORTED_LANGUAGES,
-} from './config';
+} from './config.js';
 
 describe('i18n config', () => {
   it('has English as default language', () => {

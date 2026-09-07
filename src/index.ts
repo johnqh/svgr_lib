@@ -1,5 +1,9 @@
 // Config
-export type { SvgrAppConfig, FirebaseConfig, RevenueCatConfig } from './config';
+export type {
+  SvgrAppConfig,
+  FirebaseConfig,
+  RevenueCatConfig,
+} from './config/index.js';
 export {
   APP_NAME,
   APP_DOMAIN,
@@ -9,18 +13,18 @@ export {
   QUALITY_DEFAULT,
   SUPPORTED_IMAGE_TYPES,
   MAX_PIXELS,
-} from './config';
-export type { SupportedImageType } from './config';
-export type { ConversionPreset } from './config';
+} from './config/index.js';
+export type { SupportedImageType } from './config/index.js';
+export type { ConversionPreset } from './config/index.js';
 export {
   CONVERSION_PRESETS,
   DEFAULT_PRESET_ID,
   getPresetById,
   getDefaultPreset,
-} from './config';
+} from './config/index.js';
 
 // i18n
-export type { LanguageInfo } from './i18n';
+export type { LanguageInfo } from './i18n/index.js';
 export {
   SUPPORTED_LANGUAGES,
   SUPPORTED_LANGUAGE_CODES,
@@ -28,10 +32,10 @@ export {
   I18N_NAMESPACES,
   DEFAULT_NAMESPACE,
   LANGUAGE_HREFLANG_MAP,
-} from './i18n';
+} from './i18n/index.js';
 
 // Utils
-export type { ValidationResult } from './utils';
+export type { ValidationResult } from './utils/index.js';
 export {
   isValidImageType,
   getBaseName,
@@ -41,10 +45,14 @@ export {
   getAcceptedFileExtensions,
   MAX_FILE_SIZE_BYTES,
   MAX_FILE_SIZE_MB,
-} from './utils';
-export type { SvgDimensions } from './utils';
-export { getSvgDimensions, getSvgFileSize, getSvgFileSizeKB } from './utils';
-export { scaleImageWeb } from './utils';
+} from './utils/index.js';
+export type { SvgDimensions } from './utils/index.js';
+export {
+  getSvgDimensions,
+  getSvgFileSize,
+  getSvgFileSizeKB,
+} from './utils/index.js';
+export { scaleImageWeb } from './utils/index.js';
 
 // Hooks
 export type {
@@ -52,7 +60,7 @@ export type {
   UseImageConverterReturn,
   ScaleImageFn,
   UseCommunitiesReturn,
-} from './hooks';
+} from './hooks/index.js';
 export {
   useImageConverter,
   useCommunities,
@@ -60,7 +68,7 @@ export {
   TRANSPARENT_BG_SUPPORTED_IMAGE_TYPES,
   supportsOcrOption,
   supportsTransparentBgOption,
-} from './hooks';
+} from './hooks/index.js';
 
 // Re-export types from svgr_types/svgr_client for convenience
 export type {

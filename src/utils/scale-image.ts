@@ -1,4 +1,4 @@
-import { MAX_PIXELS } from '../config/constants';
+import { MAX_PIXELS } from '../config/constants.js';
 
 /**
  * Scale a base64-encoded image so total pixels (width × height) does not

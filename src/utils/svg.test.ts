@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getSvgDimensions, getSvgFileSizeKB } from './svg';
+import { getSvgDimensions, getSvgFileSizeKB } from './svg.js';
 
 describe('getSvgDimensions', () => {
   it('extracts width/height from attributes', () => {

@@ -1,4 +1,4 @@
-export type { LanguageInfo } from './config';
+export type { LanguageInfo } from './config.js';
 export {
   SUPPORTED_LANGUAGES,
   SUPPORTED_LANGUAGE_CODES,
@@ -6,4 +6,4 @@ export {
   I18N_NAMESPACES,
   DEFAULT_NAMESPACE,
   LANGUAGE_HREFLANG_MAP,
-} from './config';
+} from './config.js';

@@ -1,4 +1,4 @@
-export type { ValidationResult } from './validation';
+export type { ValidationResult } from './validation.js';
 export {
   isValidImageType,
   getBaseName,
@@ -8,7 +8,7 @@ export {
   getAcceptedFileExtensions,
   MAX_FILE_SIZE_BYTES,
   MAX_FILE_SIZE_MB,
-} from './validation';
-export type { SvgDimensions } from './svg';
-export { getSvgDimensions, getSvgFileSize, getSvgFileSizeKB } from './svg';
-export { scaleImageWeb } from './scale-image';
+} from './validation.js';
+export type { SvgDimensions } from './svg.js';
+export { getSvgDimensions, getSvgFileSize, getSvgFileSizeKB } from './svg.js';
+export { scaleImageWeb } from './scale-image.js';

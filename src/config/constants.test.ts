@@ -6,7 +6,7 @@ import {
   QUALITY_MAX,
   QUALITY_MIN,
   SUPPORTED_IMAGE_TYPES,
-} from './constants';
+} from './constants.js';
 
 describe('constants', () => {
   it('has correct app name', () => {

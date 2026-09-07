@@ -1,4 +1,4 @@
-import { QUALITY_DEFAULT, QUALITY_MAX, QUALITY_MIN } from './constants';
+import { QUALITY_DEFAULT, QUALITY_MAX, QUALITY_MIN } from './constants.js';
 
 /**
  * A named preset for image conversion settings.

@@ -8,7 +8,7 @@ import {
 } from '@sudobility/svgr_client';
 import type { ImageType, JobResult, SvgrClient } from '@sudobility/svgr_client';
 import { useQueryClient } from '@tanstack/react-query';
-import { QUALITY_DEFAULT } from '../config/constants';
+import { QUALITY_DEFAULT } from '../config/constants.js';
 
 export const OCR_SUPPORTED_IMAGE_TYPES: ReadonlySet<ImageType> = new Set([
   'auto',

@@ -1,7 +1,7 @@
 import {
   SUPPORTED_IMAGE_TYPES,
   type SupportedImageType,
-} from '../config/constants';
+} from '../config/constants.js';
 
 /** Maximum file size allowed for image uploads, in bytes (15 MB). */
 export const MAX_FILE_SIZE_BYTES = 15 * 1024 * 1024;
