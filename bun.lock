@@ -6,8 +6,8 @@
       "name": "@sudobility/svgr_lib",
       "devDependencies": {
         "@eslint/js": "^9.39.2",
-        "@sudobility/svgr_client": "^1.0.47",
-        "@sudobility/svgr_types": "^1.0.29",
+        "@sudobility/svgr_client": "^1.0.48",
+        "@sudobility/svgr_types": "^1.0.30",
         "@sudobility/types": "^1.9.67",
         "@tanstack/react-query": "^5.90.5",
         "@types/node": "^24.9.1",
@@ -24,8 +24,8 @@
         "vitest": "^4.0.4",
       },
       "peerDependencies": {
-        "@sudobility/svgr_client": "^1.0.47",
-        "@sudobility/svgr_types": "^1.0.29",
+        "@sudobility/svgr_client": "^1.0.48",
+        "@sudobility/svgr_types": "^1.0.30",
         "@sudobility/types": "^1.9.67",
         "@tanstack/react-query": ">=5.0.0",
         "react": ">=18.0.0",
@@ -207,9 +207,9 @@
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
-    "@sudobility/svgr_client": ["@sudobility/svgr_client@1.0.47", "", { "dependencies": { "@sudobility/svgr_types": "^1.0.29" }, "peerDependencies": { "@sudobility/types": "^1.9.67", "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-TKoeL4S0LDZLcyC7tz6LVw+CYG0jGoPA79rbx37BMcO+EIuZsPiHFBsAdL+Bw6SsJCXrPCEgIK2HG26aU/UKpQ=="],
+    "@sudobility/svgr_client": ["@sudobility/svgr_client@1.0.48", "", { "dependencies": { "@sudobility/svgr_types": "^1.0.30" }, "peerDependencies": { "@sudobility/types": "^1.9.67", "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-CFkNiiOxY44wOFP1Y7oFIWTFU7oWkh8Q23Qyv/lreQQn15jBZS39w1mhDGOnMNADOEB5V0XShluD2SMcayvbvQ=="],
 
-    "@sudobility/svgr_types": ["@sudobility/svgr_types@1.0.29", "", { "peerDependencies": { "@sudobility/types": "^1.9.67" } }, "sha512-kgUSzU4HAJphiq8wtLe6X31K3DK7DHivAW6caZuALFP/LGBxWyfU/Vbmr2Li4dC3bYQsqKCSgClfspJ+KkS+9g=="],
+    "@sudobility/svgr_types": ["@sudobility/svgr_types@1.0.30", "", { "peerDependencies": { "@sudobility/types": "^1.9.67" } }, "sha512-YcharbVBhFfwk6ysSjllKyUuWAtZSR2EpqXA/Vw1CXN/IeD5RHty+qKV0wTHXlhFnK3cTwtmsbma5SD/HNUuxA=="],
 
     "@sudobility/types": ["@sudobility/types@1.9.67", "", {}, "sha512-d+jk4L9i8VNvOnCJW/craqiiUTPH5aRq4KYe/QBrBU3mCcTfoYjgzzXopVQRcthiZ5dwQAEpdqCTQ0gAWRN6Ww=="],
 
